@@ -304,11 +304,9 @@ function getBalloonProperties(defeatedEnemies) {
     if (defeatedEnemies < 120) return { type: 'rainbow', health: 11, childrenType: 'bw', childrenHealth: 10 };
     return { type: 'ceramic', health: 12, childrenType: 'rainbow', childrenHealth: 11 };
 }
-
 document.addEventListener("click", (e) => {
     if (e.target.id === "restartButton") {
         resetGame();
     }
 });
-
 gameLoop();
