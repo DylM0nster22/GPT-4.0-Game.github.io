@@ -469,12 +469,12 @@ function getBalloonProperties(defeatedEnemies) {
             speed: baseSpeed * (1 + speedIncrement * 4.4),
             childrenType: 'rainbow',
             childrenHealth: 11
+           else
+        return {
+            type: 'red',
+            health: 1,
+            speed: baseSpeed
         };
-    return { 
-        type: 'red', 
-        health: 1, 
-        speed: baseSpeed
-    };
 }
 function spawnPowerUp() {
     const x = Math.random() * canvas.width;
