@@ -11,6 +11,7 @@ let lastPowerUpSpawnTime = 0;
 let powerUpSpawnInterval = 10000; // 10 seconds
 let gameOver = false;
 let boss = null;
+const gameState = { score: 0, upgrades: 0, defeatedEnemies: 0, bossDefeated: 0, bossSpawned: false, powerUpSpawned: false };
 const gameState = { score: 0, upgrades: 0, defeatedEnemies: 0, bossDefeated: 0, bossSpawned: false };
 const gameState = { score: 0, upgrades: 0, defeatedEnemies: 0 };
 
@@ -34,10 +35,6 @@ function gameLoop() {
     update();
     render();
 
-    if (Date.now() - lastPowerUpSpawnTime > powerUpSpawnInterval) {
-        spawnPowerUp();
-        lastPowerUpSpawnTime = Date.now();
-    }
 
     requestAnimationFrame(gameLoop);
 }
@@ -74,7 +71,7 @@ function render() {
     drawBullets();
     drawEnemies();
     drawPowerUps();
-    drawKillCount();
+    drawKillCount(); // Add back the kill count
     if (boss) {
         drawBoss();
     }
@@ -306,23 +303,29 @@ function checkCollisions() {
         }
     }
 
-    // Check collision between bullets and the boss
-    if (boss) {
-        for (let i = 0; i < bullets.length; i++) {
-            const bullet = bullets[i];
+// Check collision between bullets and the boss
+if (boss) {
+    for (let i = 0; i < bullets.length; i++) {
+        const bullet = bullets[i];
 
-            if (Math.hypot(bullet.x - boss.x, bullet.y - boss.y) < (bullet.size + boss.size) / 2) {
-                bullets.splice(i, 1);
-                i--;
+        if (Math.hypot(bullet.x - boss.x, bullet.y - boss.y) < (bullet.size + boss.size) / 2) {
+            bullets.splice(i, 1);
+            i--;
 
-                boss.hits++;
-                if (boss.hits === boss.health) {
-                    boss = null;
-                    gameState.bossDefeated++;
+            boss.hits++;
+            if (boss.hits === boss.health) {
+                boss = null;
+                gameState.bossDefeated++;
+
+                // Spawn power-up if it hasn't been spawned before
+                if (!gameState.powerUpSpawned) {
+                    spawnPowerUp();
+                    gameState.powerUpSpawned = true;
                 }
             }
         }
     }
+}
 
     return enemiesDestroyed;
 }
@@ -395,63 +398,70 @@ function getBalloonProperties(defeatedEnemies) {
         return {
             type: 'yellow', 
             health: 4, 
-            speed: baseSpeed * (1 + speedIncrement * 3),
+            speed: baseSpeed * (1 + speedIncrement * 2.5),
             childrenType: 'green', 
             childrenHealth: 3
         };
-	 if (defeatedEnemies < 50)
+	if (defeatedEnemies < 50)
+        return {
+            type: 'pink',
+            health: 5,
+            speed: baseSpeed * (1 + speedIncrement * 3),
+            childrenType: 'yellow',
+            childrenHealth: 4
+	 if (defeatedEnemies < 60)
         return {
             type: 'black',
             health: 6,
-            speed: baseSpeed * (1 + speedIncrement * 5),
+            speed: baseSpeed * (1 + speedIncrement * 3.2),
             childrenType: 'pink',
             childrenHealth: 5
         };
-    if (defeatedEnemies < 60)
+    if (defeatedEnemies < 70)
         return {
             type: 'white',
             health: 7,
-            speed: baseSpeed * (1 + speedIncrement * 6),
+            speed: baseSpeed * (1 + speedIncrement * 3.4),
             childrenType: 'black',
             childrenHealth: 6
         };
-    if (defeatedEnemies < 70)
+    if (defeatedEnemies < 80)
         return {
             type: 'purple',
             health: 8,
-            speed: baseSpeed * (1 + speedIncrement * 7),
+            speed: baseSpeed * (1 + speedIncrement * 3.6),
             childrenType: 'white',
             childrenHealth: 7
         };
-    if (defeatedEnemies < 80)
+    if (defeatedEnemies < 90)
         return {
             type: 'silver',
             health: 9,
-            speed: baseSpeed * (1 + speedIncrement * 8),
+            speed: baseSpeed * (1 + speedIncrement * 3.8),
             childrenType: 'purple',
             childrenHealth: 8
         };
-    if (defeatedEnemies < 90)
+    if (defeatedEnemies < 100)
         return {
             type: 'bw',
             health: 10,
-            speed: baseSpeed * (1 + speedIncrement * 9),
+            speed: baseSpeed * (1 + speedIncrement * 4),
             childrenType: 'silver',
             childrenHealth: 9
         };
-    if (defeatedEnemies < 100)
+    if (defeatedEnemies < 110)
         return {
             type: 'rainbow',
             health: 11,
-            speed: baseSpeed * (1 + speedIncrement * 10),
+            speed: baseSpeed * (1 + speedIncrement * 4.2),
             childrenType: 'bw',
             childrenHealth: 10
         };
-    if (defeatedEnemies < 110)
+    if (defeatedEnemies < 120)
         return {
             type: 'ceramic',
             health: 12,
-            speed: baseSpeed * (1 + speedIncrement * 11),
+            speed: baseSpeed * (1 + speedIncrement * 4.4),
             childrenType: 'rainbow',
             childrenHealth: 11
         };
