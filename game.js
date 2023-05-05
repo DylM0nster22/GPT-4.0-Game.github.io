@@ -10,6 +10,8 @@ let lastSpawnTime = 0;
 let lastPowerUpSpawnTime = 0;
 let powerUpSpawnInterval = 10000; // 10 seconds
 let gameOver = false;
+let boss = null;
+const gameState = { score: 0, upgrades: 0, defeatedEnemies: 0, bossDefeated: 0, bossSpawned: false };
 const gameState = { score: 0, upgrades: 0, defeatedEnemies: 0 };
 
 
@@ -41,18 +43,27 @@ function gameLoop() {
 }
 
 // Call gameLoop();
-gameLoop();
 function update() {
     handlePlayerMovement();
     handleBullets();
     handleEnemies();
-    handlePowerUps(); // Add this line
+    handlePowerUps();
     const pointsEarned = checkCollisions();
     gameState.score += pointsEarned;
     
     // Check upgrade when the player reaches 5 points
       if (gameState.score >= 10 && gameState.upgrades < 1) {
         gameState.upgrades = 1;
+    }
+
+    // Spawn boss when the player reaches 50 kills
+    if (!gameState.bossSpawned && gameState.defeatedEnemies >= 50) {
+        spawnBoss();
+        gameState.bossSpawned = true;
+    }
+
+    if (boss) {
+        updateBoss();
     }
 }
 
@@ -62,9 +73,28 @@ function render() {
     drawPlayer();
     drawBullets();
     drawEnemies();
-    drawPowerUps(); // Add this line
+    drawPowerUps();
     drawKillCount();
+    if (boss) {
+        drawBoss();
+    }
 }
+
+// Add the spawnBoss() function
+function spawnBoss() {
+    boss = { x: canvas.width / 2, y: 100, size: 60, health: 20, hits: 0 };
+}
+
+// Add the updateBoss() function
+function updateBoss() {
+    handleBossMovement();
+
+    if (Date.now() - lastPowerUpSpawnTime > powerUpSpawnInterval) {
+        spawnPowerUp();
+        lastPowerUpSpawnTime = Date.now();
+    }
+}
+
 // Helper functions
 function handlePlayerMovement() {
     if (keys[87] || keys[38]) player.y = Math.max(player.y - playerSpeed, player.size / 2);
@@ -276,6 +306,24 @@ function checkCollisions() {
         }
     }
 
+    // Check collision between bullets and the boss
+    if (boss) {
+        for (let i = 0; i < bullets.length; i++) {
+            const bullet = bullets[i];
+
+            if (Math.hypot(bullet.x - boss.x, bullet.y - boss.y) < (bullet.size + boss.size) / 2) {
+                bullets.splice(i, 1);
+                i--;
+
+                boss.hits++;
+                if (boss.hits === boss.health) {
+                    boss = null;
+                    gameState.bossDefeated++;
+                }
+            }
+        }
+    }
+
     return enemiesDestroyed;
 }
 
@@ -441,6 +489,14 @@ function drawPowerUps() {
         ctx.arc(powerUp.x, powerUp.y, powerUp.size, 0, 2 * Math.PI);
         ctx.fill();
     }
+}
+function handleBossMovement() {
+    if (!boss) return;
+    boss.x = player.x;
+}
+function drawBoss() {
+    ctx.fillStyle = 'brown';
+    ctx.fillRect(boss.x - boss.size / 2, boss.y - boss.size / 2, boss.size, boss.size);
 }
 document.addEventListener("click", (e) => {
     if (e.target.id === "restartButton") {
