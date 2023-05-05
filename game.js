@@ -4,8 +4,11 @@ const ctx = canvas.getContext("2d");
 const playerSpeed = 5;
 const bulletSpeed = 10;
 const enemies = [];
+const powerUps = [];
 let spawnInterval = 2000;
 let lastSpawnTime = 0;
+let lastPowerUpSpawnTime = 0;
+let powerUpSpawnInterval = 10000; // 10 seconds
 let gameOver = false;
 const gameState = { score: 0, upgrades: 0, defeatedEnemies: 0 };
 
@@ -28,18 +31,27 @@ function gameLoop() {
 
     update();
     render();
+
+    if (Date.now() - lastPowerUpSpawnTime > powerUpSpawnInterval) {
+        spawnPowerUp();
+        lastPowerUpSpawnTime = Date.now();
+    }
+
     requestAnimationFrame(gameLoop);
 }
 
+// Call gameLoop();
+gameLoop();
 function update() {
     handlePlayerMovement();
     handleBullets();
     handleEnemies();
+    handlePowerUps(); // Add this line
     const pointsEarned = checkCollisions();
     gameState.score += pointsEarned;
     
     // Check upgrade when the player reaches 5 points
-    if (gameState.score >= 10 && gameState.upgrades < 1) {
+      if (gameState.score >= 10 && gameState.upgrades < 1) {
         gameState.upgrades = 1;
     }
 }
@@ -50,6 +62,7 @@ function render() {
     drawPlayer();
     drawBullets();
     drawEnemies();
+    drawPowerUps(); // Add this line
     drawKillCount();
 }
 // Helper functions
@@ -66,13 +79,20 @@ function shootBullet(e) {
     const normalizedDirectionX = directionX / magnitude;
     const normalizedDirectionY = directionY / magnitude;
 
-    if (gameState.upgrades >= 1) {
+    if (gameState.upgrades & 1) { // Check if the first bit is set
         const angleOffsets = [-15 * (Math.PI / 180), 0, 15 * (Math.PI / 180)];
         angleOffsets.forEach((angleOffset) => {
             shootBulletWithAngleOffset(normalizedDirectionX, normalizedDirectionY, angleOffset);
         });
     } else {
         const bullet = { x: player.x, y: player.y, directionX: normalizedDirectionX, directionY: normalizedDirectionY, size: 5 };
+        bullets.push(bullet);
+    }
+
+    if (gameState.upgrades & (1 << 1)) { // Check if the second bit is set (backwards shooting power-up)
+        const backwardsDirectionX = -normalizedDirectionX;
+        const backwardsDirectionY = -normalizedDirectionY;
+        const bullet = { x: player.x, y: player.y, directionX: backwardsDirectionX, directionY: backwardsDirectionY, size: 5 };
         bullets.push(bullet);
     }
 }
@@ -393,6 +413,35 @@ function getBalloonProperties(defeatedEnemies) {
         health: 1, 
         speed: baseSpeed
     };
+}
+function spawnPowerUp() {
+    const x = Math.random() * canvas.width;
+    const y = Math.random() * canvas.height;
+
+    const powerUp = { x: x, y: y, size: 10, type: 'backwards_shooting' };
+    powerUps.push(powerUp);
+}
+function handlePowerUps() {
+    for (let i = 0; i < powerUps.length; i++) {
+        const powerUp = powerUps[i];
+
+        if (Math.hypot(player.x - powerUp.x, player.y - powerUp.y) < (player.size + powerUp.size) / 2) {
+            powerUps.splice(i, 1);
+            i--;
+
+            if (powerUp.type === 'backwards_shooting') {
+                gameState.upgrades |= 1 << 1; // Set the second bit to 1
+            }
+        }
+    }
+}
+function drawPowerUps() {
+    ctx.fillStyle = "cyan";
+    for (const powerUp of powerUps) {
+        ctx.beginPath();
+        ctx.arc(powerUp.x, powerUp.y, powerUp.size, 0, 2 * Math.PI);
+        ctx.fill();
+    }
 }
 document.addEventListener("click", (e) => {
     if (e.target.id === "restartButton") {
