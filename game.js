@@ -351,63 +351,62 @@ function getBalloonProperties(defeatedEnemies) {
             childrenType: 'green', 
             childrenHealth: 3
         };
-	if (defeatedEnemies < 50) 
+	 if (defeatedEnemies < 50)
         return {
-            type: 'Pink', 
-            health: 5, 
-            speed: baseSpeed * (1 + speedIncrement * 4),
-            childrenType: 'yellow', 
-            childrenHealth: 4
-        };
-	if (defeatedEnemies < 60) 
-        return {
-            type: 'black', 
-            health: 6, 
+            type: 'black',
+            health: 6,
             speed: baseSpeed * (1 + speedIncrement * 5),
-            childrenType: 'pink', 
+            childrenType: 'pink',
             childrenHealth: 5
-	if (defeatedEnemies < 70) 
+        };
+    if (defeatedEnemies < 60)
         return {
-            type: 'white', 
-            health: 7, 
+            type: 'white',
+            health: 7,
             speed: baseSpeed * (1 + speedIncrement * 6),
-            childrenType: 'black', 
+            childrenType: 'black',
             childrenHealth: 6
-	if (defeatedEnemies < 80) 
+        };
+    if (defeatedEnemies < 70)
         return {
-            type: 'purple', 
-            health: 8, 
+            type: 'purple',
+            health: 8,
             speed: baseSpeed * (1 + speedIncrement * 7),
-            childrenType: 'white', 
-			childrenHealth: 7
-	if (defeatedEnemies < 90) 
+            childrenType: 'white',
+            childrenHealth: 7
+        };
+    if (defeatedEnemies < 80)
         return {
-            type: 'silver', 
-            health: 9, 
+            type: 'silver',
+            health: 9,
             speed: baseSpeed * (1 + speedIncrement * 8),
-            childrenType: 'purple', 
-			childrenHealth: 8
-	if (defeatedEnemies < 100) 
+            childrenType: 'purple',
+            childrenHealth: 8
+        };
+    if (defeatedEnemies < 90)
         return {
-            type: 'bw', 
-            health: 10, 
+            type: 'bw',
+            health: 10,
             speed: baseSpeed * (1 + speedIncrement * 9),
-            childrenType: 'silver', 
-			childrenHealth: 9
-	if (defeatedEnemies < 80) 
+            childrenType: 'silver',
+            childrenHealth: 9
+        };
+    if (defeatedEnemies < 100)
         return {
-            type: 'rainbow', 
-            health: 11, 
+            type: 'rainbow',
+            health: 11,
             speed: baseSpeed * (1 + speedIncrement * 10),
-            childrenType: 'bw', 
-			childrenHealth: 10
-	if (defeatedEnemies < 80) 
+            childrenType: 'bw',
+            childrenHealth: 10
+        };
+    if (defeatedEnemies < 110)
         return {
-            type: 'ceramic', 
-            health: 12, 
+            type: 'ceramic',
+            health: 12,
             speed: baseSpeed * (1 + speedIncrement * 11),
-            childrenType: 'rainbow', 
-			childrenHealth: 11
+            childrenType: 'rainbow',
+            childrenHealth: 11
+        };
     return { 
         type: 'red', 
         health: 1, 
