@@ -9,7 +9,7 @@ body {
 
 canvas {
     border: 1px solid #ccc;
-    position: relative; /* added this property */
+    position: relative;
 }
 
 #gameCanvas {
@@ -18,15 +18,18 @@ canvas {
 }
 
 #gameOverScreen {
-    display: none;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
-    background-color: rgba(0, 0, 0, 0.7); /* added this property to create a dark overlay */
-    color: white; /* added this property to make the text more visible */
-    width: 100%; /* added this property to fill the container */
-    padding: 1rem; /* added this property for spacing */
-    box-sizing: border-box; /* added this property to maintain container width */
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    width: 100%;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+.hidden {
+    display: none;
 }
