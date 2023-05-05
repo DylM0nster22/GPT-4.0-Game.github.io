@@ -11,10 +11,14 @@ let lastPowerUpSpawnTime = 0;
 let powerUpSpawnInterval = 10000; // 10 seconds
 let gameOver = false;
 let boss = null;
-const gameState = { score: 0, upgrades: 0, defeatedEnemies: 0, bossDefeated: 0, bossSpawned: false, powerUpSpawned: false };
-const gameState = { score: 0, upgrades: 0, defeatedEnemies: 0, bossDefeated: 0, bossSpawned: false };
-const gameState = { score: 0, upgrades: 0, defeatedEnemies: 0 };
-
+const gameState = {
+  score: 0,
+  upgrades: 0,
+  defeatedEnemies: 0,
+  bossDefeated: 0,
+  bossSpawned: false,
+  powerUpSpawned: false,
+};
 
 const player = { x: canvas.width / 2, y: canvas.height / 2, size: 20 };
 const bullets = [];
