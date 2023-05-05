@@ -284,10 +284,17 @@ function resetGame() {
 }
 
 function drawKillCount() {
-    ctx.font = "20px Arial";
-    ctx.fillStyle = "whit";
-    ctx.textAlign = "right";
+    ctx.font = '20px Arial';
+    ctx.fillStyle = 'white';
+    ctx.textAlign = 'right';
     ctx.fillText(`Kills: ${gameState.defeatedEnemies}`, canvas.width - 10, 30);
+
+    let currentLevel = 1;
+    if(gameState.defeatedEnemies >= 30) currentLevel = 4;
+    else if(gameState.defeatedEnemies >= 20) currentLevel = 3;
+    else if(gameState.defeatedEnemies >= 10) currentLevel = 2;
+
+    ctx.fillText(`Level: ${currentLevel}`, canvas.width - 10, 60);
 }
 
 function getBalloonProperties(defeatedEnemies) {
