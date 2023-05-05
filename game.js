@@ -16,7 +16,7 @@ const bullets = [];
 // Controls
 let keys = {};
 document.addEventListener("keydown", (e) => { keys[e.keyCode] = true; });
-document.addEventListener("keyup", (e) => { keys[e.keyCode] = false; });2
+document.addEventListener("keyup", (e) => { keys[e.keyCode] = false; });
 canvas.addEventListener("click", shootBullet);
 
 // Game loop
