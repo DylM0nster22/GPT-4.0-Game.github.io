@@ -47,9 +47,9 @@ function update() {
     handlePowerUps();
     const pointsEarned = checkCollisions();
     gameState.score += pointsEarned;
-    
+
     // Check upgrade when the player reaches 5 points
-      if (gameState.score >= 10 && gameState.upgrades < 1) {
+    if (gameState.score >= 10 && gameState.upgrades < 1) {
         gameState.upgrades = 1;
     }
 
@@ -63,6 +63,7 @@ function update() {
         updateBoss();
     }
 }
+
 
 
 function render() {
