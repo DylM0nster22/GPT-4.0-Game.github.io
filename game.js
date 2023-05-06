@@ -382,7 +382,7 @@ function getBalloonProperties(defeatedEnemies) {
             health: 1, 
             speed: baseSpeed 
         };
-    else if (defeatedEnemies < 20) 
+	}else if (defeatedEnemies < 20) 
         return {
             type: 'blue', 
             health: 2, 
@@ -390,7 +390,7 @@ function getBalloonProperties(defeatedEnemies) {
             childrenType: 'red', 
             childrenHealth: 1
         };
-    else if (defeatedEnemies < 30) 
+    }else if (defeatedEnemies < 30) 
         return {
             type: 'green', 
             health: 3, 
@@ -398,7 +398,7 @@ function getBalloonProperties(defeatedEnemies) {
             childrenType: 'blue', 
             childrenHealth: 2 
         };
-    else if (defeatedEnemies < 40) 
+    }else if (defeatedEnemies < 40) 
         return {
             type: 'yellow', 
             health: 4, 
@@ -406,7 +406,7 @@ function getBalloonProperties(defeatedEnemies) {
             childrenType: 'green', 
             childrenHealth: 3
         };
-	else if (defeatedEnemies < 50)
+	}else if (defeatedEnemies < 50)
         return {
             type: 'pink',
             health: 5,
@@ -414,7 +414,7 @@ function getBalloonProperties(defeatedEnemies) {
             childrenType: 'yellow',
             childrenHealth: 4
 		};
-	else if (defeatedEnemies < 60)
+	}else if (defeatedEnemies < 60)
         return {
             type: 'black',
             health: 6,
@@ -422,7 +422,7 @@ function getBalloonProperties(defeatedEnemies) {
             childrenType: 'pink',
             childrenHealth: 5
         };
-    else if (defeatedEnemies < 70)
+    }else if (defeatedEnemies < 70)
         return {
             type: 'white',
             health: 7,
@@ -430,7 +430,7 @@ function getBalloonProperties(defeatedEnemies) {
             childrenType: 'black',
             childrenHealth: 6
         };
-    else if (defeatedEnemies < 80)
+    }else if (defeatedEnemies < 80)
         return {
             type: 'purple',
             health: 8,
@@ -438,7 +438,7 @@ function getBalloonProperties(defeatedEnemies) {
             childrenType: 'white',
             childrenHealth: 7
         };
-    else if (defeatedEnemies < 90)
+    }else if (defeatedEnemies < 90)
         return {
             type: 'silver',
             health: 9,
@@ -446,7 +446,7 @@ function getBalloonProperties(defeatedEnemies) {
             childrenType: 'purple',
             childrenHealth: 8
         };
-    else f (defeatedEnemies < 100)
+    }else f (defeatedEnemies < 100)
         return {
             type: 'bw',
             health: 10,
@@ -454,7 +454,7 @@ function getBalloonProperties(defeatedEnemies) {
             childrenType: 'silver',
             childrenHealth: 9
         };
-    else if (defeatedEnemies < 110)
+    }else if (defeatedEnemies < 110)
         return {
             type: 'rainbow',
             health: 11,
@@ -462,7 +462,7 @@ function getBalloonProperties(defeatedEnemies) {
             childrenType: 'bw',
             childrenHealth: 10
         };
-    else if (defeatedEnemies < 120)
+    }else if (defeatedEnemies < 120)
         return {
             type: 'ceramic',
             health: 12,
