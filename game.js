@@ -288,6 +288,8 @@ function checkCollisions() {
         break;
     }
 }
+
+
     for (let i = 0; i < bullets.length; i++) {
         for (let j = 0; j < enemies.length; j++) {
             const bullet = bullets[i];
