@@ -5,6 +5,7 @@ const playerSpeed = 5;
 const bulletSpeed = 10;
 const enemies = [];
 const powerUps = [];
+let isInvincible = false;
 let spawnInterval = 2000;
 let lastSpawnTime = 0;
 let lastPowerUpSpawnTime = 0;
@@ -28,6 +29,11 @@ let keys = {};
 document.addEventListener("keydown", (e) => { keys[e.keyCode] = true; });
 document.addEventListener("keyup", (e) => { keys[e.keyCode] = false; });
 canvas.addEventListener("click", shootBullet);
+document.addEventListener("keydown", (e) => {
+    if (e.keyCode === 90) { // 90 is the key code for 'Z'
+        isInvincible = !isInvincible; // Toggle invincibility
+    }
+});
 
 // Game loop
 function gameLoop() {
@@ -49,9 +55,11 @@ function update() {
     handleBullets();
     handleEnemies();
     handlePowerUps();
-    const pointsEarned = checkCollisions();
-    gameState.score += pointsEarned;
-
+    
+    if (!isInvincible) {
+        const pointsEarned = checkCollisions();
+        gameState.score += pointsEarned;
+    }
     // Check upgrade when the player reaches 5 points
     if (gameState.score >= 10 && gameState.upgrades < 1) {
         gameState.upgrades = 1;
