@@ -56,9 +56,8 @@ function update() {
     handleEnemies();
     handlePowerUps();
     
-    if (!isInvincible) {
-        const pointsEarned = checkCollisions();
-        gameState.score += pointsEarned;
+       const pointsEarned = checkCollisions();
+       gameState.score += pointsEarned;
     }
     // Check upgrade when the player reaches 5 points
     if (gameState.score >= 10 && gameState.upgrades < 1) {
@@ -283,15 +282,12 @@ function checkCollisions() {
     let enemiesDestroyed = 0;
 
     // Check player and enemy collision only when the player is not invincible
-    if (!isInvincible) {
-        for (const enemy of enemies) {
-            if (Math.hypot(player.x - enemy.x, player.y - enemy.y) < (player.size + enemy.size) / 2) {
-                gameOver = true;
-                break;
-            }
-        }
+    for (const enemy of enemies) {
+    if (!isInvincible && Math.hypot(player.x - enemy.x, player.y - enemy.y) < (player.size + enemy.size) / 2) {
+        gameOver = true;
+        break;
     }
-
+}
     for (let i = 0; i < bullets.length; i++) {
         for (let j = 0; j < enemies.length; j++) {
             const bullet = bullets[i];
