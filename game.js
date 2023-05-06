@@ -282,6 +282,7 @@ function splitEnemy(enemy) {
 function checkCollisions() {
     let enemiesDestroyed = 0;
 
+    // Check player and enemy collision only when the player is not invincible
     if (!isInvincible) {
         for (const enemy of enemies) {
             if (Math.hypot(player.x - enemy.x, player.y - enemy.y) < (player.size + enemy.size) / 2) {
@@ -290,7 +291,6 @@ function checkCollisions() {
             }
         }
     }
-
 
     for (let i = 0; i < bullets.length; i++) {
         for (let j = 0; j < enemies.length; j++) {
