@@ -6,6 +6,7 @@ const bulletSpeed = 10;
 const enemies = [];
 const powerUps = [];
 const loseSound = new Audio('https://DylM0nster22.github.io/GPT-4.0-Game.github.io/rickroll.mp3');
+let isPaused = false;
 let isInvincible = false;
 let spawnInterval = 2000;
 let lastSpawnTime = 0;
@@ -31,6 +32,16 @@ const bullets = [];
 
 // Controls
 let keys = {};
+document.getElementById("resumeButton").addEventListener("click", togglePauseMenu);
+document.getElementById("restartPauseButton").addEventListener("click", () => {
+    togglePauseMenu();
+    resetGame();
+});
+document.addEventListener("keydown", (e) => {
+    if (e.keyCode === 80) { // 80 is the key code for 'P' or 'p'
+        togglePauseMenu();
+    }
+});
 document.addEventListener("keydown", (e) => { keys[e.keyCode] = true; });
 document.addEventListener("keyup", (e) => { keys[e.keyCode] = false; });
 canvas.addEventListener("click", shootBullet);
@@ -47,12 +58,24 @@ function gameLoop() {
         return;
     }
 
-    update();
-    render();
-
+    if (!isPaused) {
+        update();
+        render();
+    }
 
     requestAnimationFrame(gameLoop);
 }
+function togglePauseMenu() {
+    isPaused = !isPaused;
+
+    const pauseMenu = document.getElementById("pauseMenu");
+    if (isPaused) {
+        pauseMenu.style.display = "block";
+    } else {
+        pauseMenu.style.display = "none";
+    }
+}
+
 
 // Call gameLoop();
 function update() {

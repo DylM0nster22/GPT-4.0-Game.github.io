@@ -19,7 +19,7 @@
             display: block;
         }
 
-        #gameOverScreen {
+        #gameOverScreen, #pauseMenu {
             background-color: rgba(0, 0, 0, 0.8);
             color: white;
             width: 800px;
@@ -52,6 +52,11 @@
 </head>
 <body>
     <canvas id="gameCanvas" width="800" height="600"></canvas>
+    <div id="pauseMenu" class="hidden">
+        <h1>Paused</h1>
+        <button id="resumeButton">Resume</button>
+        <button id="restartPauseButton">Restart</button>
+    </div>
     <div id="gameOverScreen" class="hidden">
         <h1>Game Over</h1>
         <button id="restartButton">Restart</button>
