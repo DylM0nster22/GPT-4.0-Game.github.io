@@ -5,7 +5,7 @@ const playerSpeed = 5;
 const bulletSpeed = 10;
 const enemies = [];
 const powerUps = [];
-const loseSound = new Audio(rickroll.mp3);
+const loseSound = new Audio('https://DylM0nster22.github.io/GPT-4.0-Game.github.io/Rickroll.mp3');
 let isInvincible = false;
 let spawnInterval = 2000;
 let lastSpawnTime = 0;
@@ -150,7 +150,6 @@ function handlePlayerMovement() {
     if (keys[68] || keys[39]) player.x = Math.min(player.x + playerSpeed, canvas.width - player.size / 2);
 }
 function shootBullet(e) {
-	function shootBullet(e) {
     const currentTime = Date.now();
     if (currentTime - lastClickTime <= 1000) {
         clickCount++;
@@ -164,7 +163,7 @@ function shootBullet(e) {
         clickCount = 1;
     }
     lastClickTime = currentTime;
-    // (Keep the rest of the shootBullet function code here)
+
     const directionX = e.clientX - canvas.offsetLeft - player.x;
     const directionY = e.clientY - canvas.offsetTop - player.y;
     const magnitude = Math.sqrt(directionX * directionX + directionY * directionY);
