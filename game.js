@@ -283,15 +283,12 @@ function splitEnemy(enemy) {
 function checkCollisions() {
     let enemiesDestroyed = 0;
 
-    if (!isInvincible) {
-        for (const enemy of enemies) {
-            if (Math.hypot(player.x - enemy.x, player.y - enemy.y) < (player.size + enemy.size) / 2) {
-                gameOver = true;
-                break;
-            }
+    for (const enemy of enemies) {
+        if (!isInvincible && Math.hypot(player.x - enemy.x, player.y - enemy.y) < (player.size + enemy.size) / 2) {
+            gameOver = true;
+            break;
         }
     }
-
 
     for (let i = 0; i < bullets.length; i++) {
         for (let j = 0; j < enemies.length; j++) {
@@ -319,29 +316,29 @@ function checkCollisions() {
         }
     }
 
-// Check collision between bullets and the boss
-if (boss) {
-    for (let i = 0; i < bullets.length; i++) {
-        const bullet = bullets[i];
+    // Check collision between bullets and the boss
+    if (boss) {
+        for (let i = 0; i < bullets.length; i++) {
+            const bullet = bullets[i];
 
-        if (Math.hypot(bullet.x - boss.x, bullet.y - boss.y) < (bullet.size + boss.size) / 2) {
-            bullets.splice(i, 1);
-            i--;
+            if (Math.hypot(bullet.x - boss.x, bullet.y - boss.y) < (bullet.size + boss.size) / 2) {
+                bullets.splice(i, 1);
+                i--;
 
-            boss.hits++;
-            if (boss.hits === boss.health) {
-                boss = null;
-                gameState.bossDefeated++;
+                boss.hits++;
+                if (boss.hits === boss.health) {
+                    boss = null;
+                    gameState.bossDefeated++;
 
-                // Spawn power-up if it hasn't been spawned before
-                if (!gameState.powerUpSpawned) {
-                    spawnPowerUp();
-                    gameState.powerUpSpawned = true;
+                    // Spawn power-up if it hasn't been spawned before
+                    if (!gameState.powerUpSpawned) {
+                        spawnPowerUp();
+                        gameState.powerUpSpawned = true;
+                    }
                 }
             }
         }
     }
-}
 
     return enemiesDestroyed;
 }
