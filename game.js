@@ -19,6 +19,7 @@ const gameState = {
   bossDefeated: 0,
   bossSpawned: false,
   powerUpSpawned: false,
+  bossComing: false, // Add this line
 };
 
 const player = { x: canvas.width / 2, y: canvas.height / 2, size: 20 };
@@ -51,15 +52,26 @@ function gameLoop() {
 
 // Call gameLoop();
 function update() {
-    handlePlayerMovement();
-    handleBullets();
-    handleEnemies();
-    handlePowerUps();
-    
-    if (!isInvincible) {
-        const pointsEarned = checkCollisions();
-        gameState.score += pointsEarned;
-    }
+  handlePlayerMovement();
+  handleBullets();
+  handleEnemies();
+  handlePowerUps();
+
+  if (!isInvincible) {
+    const pointsEarned = checkCollisions();
+    gameState.score += pointsEarned;
+  }
+
+  if (gameState.defeatedEnemies === 49 && !gameState.bossComing) {
+    gameState.bossComing = true;
+    setTimeout(() => {
+      gameState.bossComing = false;
+      spawnBoss();
+      gameState.bossSpawned = true;
+      spawnPowerUp("middle"); // spawn powerup under the boss
+    }, 3000); // Show message for 3 seconds
+  }
+
     // Check upgrade when the player reaches 5 points
     if (gameState.score >= 10 && gameState.upgrades < 1) {
         gameState.upgrades = 1;
@@ -79,16 +91,29 @@ function update() {
 
 
 function render() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawPlayer();
-    drawBullets();
-    drawEnemies();
-    drawPowerUps();
-    drawKillCount(); // Add this line to display the kill count
-    if (boss) {
-        drawBoss();
-    }
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  drawPlayer();
+  drawBullets();
+  drawEnemies();
+  drawPowerUps();
+
+  if (gameState.bossComing) {
+    drawBossComingText(); // Add this line
+  }
+
+  if (boss) {
+    drawBoss();
+  }
 }
+
+function drawBossComingText() {
+  ctx.font = "30px Arial";
+  ctx.fillStyle = "white";
+  ctx.textAlign = "center";
+  ctx.fillText("THE BOSS IS COMING", canvas.width / 2, canvas.height / 2);
+}
+
+
 
 // Add the spawnBoss() function
 function spawnBoss() {
@@ -165,13 +190,13 @@ function handleBullets() {
 }
 
 function handleEnemies() {
-    if (Date.now() - lastSpawnTime > spawnInterval) {
-        spawnEnemy();
-        lastSpawnTime = Date.now();
-        spawnInterval *= 0.99;
-    }
+  if (!boss && Date.now() - lastSpawnTime > spawnInterval) {
+    spawnEnemy();
+    lastSpawnTime = Date.now();
+    spawnInterval *= 0.99;
+  }
 
-    for (const enemy of enemies) {
+  for (const enemy of enemies) {
         const directionX = player.x - enemy.x;
         const directionY = player.y - enemy.y;
         const magnitude = Math.sqrt(directionX * directionX + directionY * directionY);
@@ -456,13 +481,22 @@ function getBalloonProperties(defeatedEnemies) {
         };
     }
 }
-function spawnPowerUp() {
-    const x = Math.random() * canvas.width;
-    const y = Math.random() * canvas.height;
+function spawnPowerUp(position) {
+  let x, y;
 
-    const powerUp = { x: x, y: y, size: 10, type: 'backwards_shooting' };
-    powerUps.push(powerUp);
+  if (position === "middle") {
+    x = boss.x;
+    y = boss.y + boss.size;
+  } else {
+    x = Math.random() * canvas.width;
+    y = Math.random() * canvas.height;
+  }
+
+  const powerUpType = gameState.defeatedEnemies >= 49 && position === "middle" ? ["backwards_shooting", "extra_bullets"][Math.floor(Math.random() * 2)] : "backwards_shooting";
+  const powerUp = { x: x, y: y, size: 10, type: powerUpType };
+  powerUps.push(powerUp);
 }
+
 function handlePowerUps() {
     for (let i = 0; i < powerUps.length; i++) {
         const powerUp = powerUps[i];
