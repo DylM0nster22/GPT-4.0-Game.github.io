@@ -5,6 +5,7 @@ const playerSpeed = 5;
 const bulletSpeed = 10;
 const enemies = [];
 const powerUps = [];
+const loseSound = new Audio(rickroll.mp3);
 let isInvincible = false;
 let spawnInterval = 2000;
 let lastSpawnTime = 0;
@@ -12,6 +13,8 @@ let lastPowerUpSpawnTime = 0;
 let powerUpSpawnInterval = 10000; // 10 seconds
 let gameOver = false;
 let boss = null;
+let clickCount = 0;
+let lastClickTime = 0;
 const gameState = {
   score: 0,
   upgrades: 0,
@@ -20,6 +23,7 @@ const gameState = {
   bossSpawned: false,
   powerUpSpawned: false,
   bossComing: false, // Add this line
+  bossProjectiles: [],
 };
 
 const player = { x: canvas.width / 2, y: canvas.height / 2, size: 20 };
@@ -87,6 +91,12 @@ function update() {
         updateBoss();
     }
 }
+function showCheaterScreen() {
+    loseSound.play();
+    const gameOverScreen = document.getElementById("gameOverScreen");
+    gameOverScreen.innerHTML = `<h1>You lose, cheater!</h1><button id="restartButton">Restart</button>`;
+    gameOverScreen.style.display = "block";
+}
 
 
 
@@ -119,7 +129,7 @@ function drawBossComingText() {
 
 // Add the spawnBoss() function
 function spawnBoss() {
-    boss = { x: canvas.width / 2, y: 100, size: 60, health: 20, hits: 0 };
+    boss = { x: canvas.width / 2, y: 100, size: 60, health: 50, hits: 0 };
 }
 
 // Add the updateBoss() function
@@ -140,6 +150,21 @@ function handlePlayerMovement() {
     if (keys[68] || keys[39]) player.x = Math.min(player.x + playerSpeed, canvas.width - player.size / 2);
 }
 function shootBullet(e) {
+	function shootBullet(e) {
+    const currentTime = Date.now();
+    if (currentTime - lastClickTime <= 1000) {
+        clickCount++;
+        
+        if (clickCount > 30) {
+            gameOver = true;
+            showCheaterScreen();
+            return;
+        }
+    } else {
+        clickCount = 1;
+    }
+    lastClickTime = currentTime;
+    // (Keep the rest of the shootBullet function code here)
     const directionX = e.clientX - canvas.offsetLeft - player.x;
     const directionY = e.clientY - canvas.offsetTop - player.y;
     const magnitude = Math.sqrt(directionX * directionX + directionY * directionY);
