@@ -91,20 +91,22 @@ function update() {
 
 
 function render() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  drawPlayer();
-  drawBullets();
-  drawEnemies();
-  drawPowerUps();
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawPlayer();
+    drawBullets();
+    drawEnemies();
+    drawPowerUps();
+    drawKillCount(); // Add this line back
 
-  if (gameState.bossComing) {
-    drawBossComingText(); // Add this line
-  }
+    if (gameState.bossComing) {
+        drawBossComingText();
+    }
 
-  if (boss) {
-    drawBoss();
-  }
+    if (boss) {
+        drawBoss();
+    }
 }
+
 
 function drawBossComingText() {
   ctx.font = "30px Arial";
