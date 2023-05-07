@@ -56,8 +56,9 @@ function update() {
     handleEnemies();
     handlePowerUps();
     
-    const pointsEarned = checkCollisions();
-    gameState.score += pointsEarned;;
+    if (!isInvincible) {
+        const pointsEarned = checkCollisions();
+        gameState.score += pointsEarned;
     }
     // Check upgrade when the player reaches 5 points
     if (gameState.score >= 10 && gameState.upgrades < 1) {
@@ -366,6 +367,7 @@ function resetGame() {
     gameLoop();
 }
 
+
 function drawKillCount() {
     ctx.font = '20px Arial';
     ctx.fillStyle = 'white';
@@ -496,4 +498,4 @@ document.addEventListener("click", (e) => {
         resetGame();
     }
 });
-gameLoop();
+resetGame();
