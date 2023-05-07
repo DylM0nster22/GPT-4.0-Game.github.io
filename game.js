@@ -431,6 +431,7 @@ function resetGame() {
     gameState.score = 0;
     gameState.upgrades = 0; // Added this line to reset player upgrades
     gameState.defeatedEnemies = 0; // Added this line to reset defeatedEnemies
+    clickCount = 0; // Clear clickCount on game reset
 
     const gameOverScreen = document.getElementById("gameOverScreen");
     gameOverScreen.style.display = "none";
