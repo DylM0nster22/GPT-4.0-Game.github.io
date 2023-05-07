@@ -31,6 +31,8 @@ const player = { x: canvas.width / 2, y: canvas.height / 2, size: 20 };
 const bullets = [];
 
 // Controls
+// ...
+// Controls
 let keys = {};
 document.addEventListener("keydown", (e) => { keys[e.keyCode] = true; });
 document.addEventListener("keyup", (e) => { keys[e.keyCode] = false; });
@@ -43,14 +45,8 @@ document.addEventListener("keydown", (e) => {
         isInvincible = !isInvincible; // Toggle invincibility
     }
 });
-document.addEventListener("keydown", (e) => { keys[e.keyCode] = true; });
-document.addEventListener("keyup", (e) => { keys[e.keyCode] = false; });
-canvas.addEventListener("click", shootBullet);
-document.addEventListener("keydown", (e) => {
-    if (e.keyCode === 90) { // 90 is the key code for 'Z'
-        isInvincible = !isInvincible; // Toggle invincibility
-    }
-});
+// ...
+
 
 // Game loop
 function gameLoop() {
@@ -577,6 +573,18 @@ function drawBoss() {
     ctx.fillStyle = 'brown';
     ctx.fillRect(boss.x - boss.size / 2, boss.y - boss.size / 2, boss.size, boss.size);
 }
+// Event listeners for resume and restart buttons in pause menu
+document.addEventListener("DOMContentLoaded", () => {
+  const resumeButton = document.getElementById("resumeButton");
+  const restartPauseButton = document.getElementById("restartPauseButton");
+
+  resumeButton.addEventListener("click", togglePauseMenu);
+  restartPauseButton.addEventListener("click", () => {
+    togglePauseMenu();
+    resetGame();
+  });
+});
+
 document.addEventListener("click", (e) => {
     if (e.target.id === "restartButton") {
         resetGame();
