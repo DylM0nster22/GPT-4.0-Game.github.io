@@ -84,6 +84,7 @@ function render() {
     drawBullets();
     drawEnemies();
     drawPowerUps();
+    drawKillCount(); // Add this line to display the kill count
     if (boss) {
         drawBoss();
     }
