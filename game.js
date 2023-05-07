@@ -56,9 +56,8 @@ function update() {
     handleEnemies();
     handlePowerUps();
     
-    if (!isInvincible) {
-        const pointsEarned = checkCollisions();
-        gameState.score += pointsEarned;
+    const pointsEarned = checkCollisions();
+    gameState.score += pointsEarned;;
     }
     // Check upgrade when the player reaches 5 points
     if (gameState.score >= 10 && gameState.upgrades < 1) {
