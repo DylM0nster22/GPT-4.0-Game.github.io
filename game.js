@@ -32,14 +32,15 @@ const bullets = [];
 
 // Controls
 let keys = {};
-document.getElementById("resumeButton").addEventListener("click", togglePauseMenu);
-document.getElementById("restartPauseButton").addEventListener("click", () => {
-    togglePauseMenu();
-    resetGame();
-});
+document.addEventListener("keydown", (e) => { keys[e.keyCode] = true; });
+document.addEventListener("keyup", (e) => { keys[e.keyCode] = false; });
+canvas.addEventListener("click", shootBullet);
 document.addEventListener("keydown", (e) => {
-    if (e.keyCode === 80) { // 80 is the key code for 'P' or 'p'
-        togglePauseMenu();
+    if (e.keyCode === 80) { // 80 is the key code for 'P'
+        togglePauseMenu(); // Call the function to toggle the pause menu
+    }
+    if (e.keyCode === 90) { // 90 is the key code for 'Z'
+        isInvincible = !isInvincible; // Toggle invincibility
     }
 });
 document.addEventListener("keydown", (e) => { keys[e.keyCode] = true; });
