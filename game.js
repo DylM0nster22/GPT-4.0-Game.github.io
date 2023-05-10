@@ -25,6 +25,7 @@ const gameState = {
   powerUpSpawned: false,
   bossComing: false, // Add this line
   bossProjectiles: [],
+  lives: 3,
 };
 
 const player = { x: canvas.width / 2, y: canvas.height / 2, size: 20 };
@@ -134,6 +135,8 @@ function render() {
 
     if (boss) {
         drawBoss();
+		 drawLivesCount();
+		}
     }
 }
 
@@ -354,12 +357,15 @@ function splitEnemy(enemy) {
 function checkCollisions() {
     let enemiesDestroyed = 0;
 
-    for (const enemy of enemies) {
-        if (!isInvincible && Math.hypot(player.x - enemy.x, player.y - enemy.y) < (player.size + enemy.size) / 2) {
-            gameOver = true;
-            break;
-        }
+for (const enemy of enemies) {
+    if (!isInvincible && Math.hypot(player.x - enemy.x, player.y - enemy.y) < (player.size + enemy.size) / 2) {
+      gameState.lives--;
+      if (gameState.lives <= 0) {
+        gameOver = true;
+        break;
+      }
     }
+}
 
     for (let i = 0; i < bullets.length; i++) {
         for (let j = 0; j < enemies.length; j++) {
@@ -413,6 +419,13 @@ function checkCollisions() {
 
     return enemiesDestroyed;
 }
+function drawLivesCount() {
+  ctx.font = '20px Arial';
+  ctx.fillStyle = 'white';
+  ctx.textAlign = 'left';
+  ctx.fillText(`Lives: ${gameState.lives}`, 10, 30);
+}
+
 
 function showGameOverScreen() {
     const gameOverScreen = document.getElementById("gameOverScreen");
