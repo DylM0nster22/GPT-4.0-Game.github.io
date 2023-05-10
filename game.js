@@ -17,15 +17,15 @@ let boss = null;
 let clickCount = 0;
 let lastClickTime = 0;
 const gameState = {
-  score: 0,
-  upgrades: 0,
-  defeatedEnemies: 0,
-  bossDefeated: 0,
-  bossSpawned: false,
-  powerUpSpawned: false,
-  bossComing: false, // Add this line
-  bossProjectiles: [],
-  lives: 3,
+    score: 0,
+    upgrades: 0,
+    defeatedEnemies: 0,
+    bossDefeated: 0,
+    bossSpawned: false,
+    powerUpSpawned: false,
+    bossComing: false,
+    bossProjectiles: [],
+    lives: 3, // Add the lives property
 };
 
 const player = { x: canvas.width / 2, y: canvas.height / 2, size: 20 };
@@ -121,13 +121,15 @@ function showCheaterScreen() {
 
 
 
+
 function render() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawPlayer();
     drawBullets();
     drawEnemies();
     drawPowerUps();
-    drawKillCount(); // Add this line back
+    drawKillCount();
+    drawLivesCount(); // Add this line
 
     if (gameState.bossComing) {
         drawBossComingText();
@@ -135,8 +137,6 @@ function render() {
 
     if (boss) {
         drawBoss();
-		 drawLivesCount();
-		}
     }
 }
 
@@ -357,15 +357,17 @@ function splitEnemy(enemy) {
 function checkCollisions() {
     let enemiesDestroyed = 0;
 
-for (const enemy of enemies) {
-    if (!isInvincible && Math.hypot(player.x - enemy.x, player.y - enemy.y) < (player.size + enemy.size) / 2) {
-      gameState.lives--;
-      if (gameState.lives <= 0) {
-        gameOver = true;
-        break;
-      }
+    for (const enemy of enemies) {
+        // Decrease lives instead of an immediate game over
+        if (!isInvincible && Math.hypot(player.x - enemy.x, player.y - enemy.y) < (player.size + enemy.size) / 2) {
+            gameState.lives--;
+            if (gameState.lives <= 0) {
+                gameOver = true;
+                break;
+            }
+        }
     }
-}
+
 
     for (let i = 0; i < bullets.length; i++) {
         for (let j = 0; j < enemies.length; j++) {
