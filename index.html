@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -48,14 +49,15 @@
             margin: 4px 2px;
             cursor: pointer;
         }
-    </style>
+     </style>
 </head>
+
 <body>
-    <canvas id="gameCanvas" width="800" height="600"></canvas>
+    <canvas id="gameCanvas" width="800" height="600" alt="Top Down Shooter Game"></canvas>
     <div id="pauseMenu" class="hidden">
         <h1>Paused</h1>
-        <button id="resumeButton">Resume</button>
-        <button id="restartPauseButton">Restart</button>
+        <button id="resumeButton" aria-label="Resume Game">Resume</button>
+        <button id="restartPauseButton" aria-label="Restart Game">Restart</button>
     </div>
     <div id="gameOverScreen" class="hidden">
         <h1>Game Over</h1>
@@ -63,4 +65,5 @@
     </div>
     <script src="game.js"></script>
 </body>
+
 </html>
