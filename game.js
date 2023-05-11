@@ -357,10 +357,16 @@ function splitEnemy(enemy) {
 function checkCollisions() {
     let enemiesDestroyed = 0;
 
-    for (const enemy of enemies) {
-        // Decrease lives instead of an immediate game over
+    for (let i = 0; i < enemies.length; i++) {
+        const enemy = enemies[i];
+
         if (!isInvincible && Math.hypot(player.x - enemy.x, player.y - enemy.y) < (player.size + enemy.size) / 2) {
             gameState.lives--;
+            enemies.splice(i, 1);
+            i--;
+            gameState.defeatedEnemies++;
+            enemiesDestroyed++;
+
             if (gameState.lives <= 0) {
                 gameOver = true;
                 break;
@@ -444,6 +450,7 @@ function resetGame() {
     lastSpawnTime = 0;
     gameOver = false;
     gameState.score = 0;
+	gameState.lives = 3; // Add this line to reset lives
     gameState.upgrades = 0; // Added this line to reset player upgrades
     gameState.defeatedEnemies = 0; // Added this line to reset defeatedEnemies
     clickCount = 0; // Clear clickCount on game reset
