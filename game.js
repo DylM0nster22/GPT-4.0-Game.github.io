@@ -174,11 +174,11 @@ function handlePlayerMovement() {
 }
 function shootBullet(e) {
     const currentTime = Date.now();
-    if (currentTime - lastClickTime <= 1000) {
+    if (currentTime - lastClickTime <= 100) {
         clickCount++;
         
         if (clickCount > 100) {
-            gameOver = true;
+            gameOver = false;
             showCheaterScreen();
             return;
         }
