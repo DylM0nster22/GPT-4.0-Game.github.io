@@ -177,7 +177,7 @@ function shootBullet(e) {
     if (currentTime - lastClickTime <= 1000) {
         clickCount++;
         
-        if (clickCount > 30) {
+        if (clickCount > 100) {
             gameOver = true;
             showCheaterScreen();
             return;
