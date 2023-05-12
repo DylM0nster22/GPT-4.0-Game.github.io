@@ -6,6 +6,8 @@ const bulletSpeed = 10;
 const enemies = [];
 const powerUps = [];
 const loseSound = new Audio('https://DylM0nster22.github.io/GPT-4.0-Game.github.io/rickroll.mp3');
+const shootSound = new Audio(https://DylM0nster22.github.io/GPT-4.0-Game.github.io/sound.wav');
+const hitEnemySound = new Audio(https://DylM0nster22.github.io/GPT-4.0-Game.github.io/hit.wav');
 let isPaused = false; // Set this back to false
 let isInvincible = false;
 let spawnInterval = 2000;
@@ -210,6 +212,14 @@ function shootBullet(e) {
         bullets.push(bullet);
     }
 }
+	if (gameState.upgrades & 1) { // Check if the first bit is set
+    // ...
+	} else {
+    // Play shoot sound effect
+    shootSound.play();
+    const bullet = { x: player.x, y: player.y, directionX: normalizedDirectionX, directionY: normalizedDirectionY, size: 5 };
+    bullets.push(bullet);
+}
 
 function shootBulletWithAngleOffset(directionX, directionY, angleOffset) {
     const cosTheta = Math.cos(angleOffset);
@@ -400,6 +410,11 @@ function checkCollisions() {
             }
         }
     }
+	if (enemy.hits === enemy.health) {
+    // Play hit enemy sound effect.
+    hitEnemySound.play();
+    // ...
+	}
 
     // Check collision between bullets and the boss
     if (boss) {
