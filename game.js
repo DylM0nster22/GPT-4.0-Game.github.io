@@ -459,7 +459,6 @@ function startGame() {
     mainMenu.style.display = "none";
     resetGame();
 }
-}
 function drawLivesCount() {
   ctx.font = '20px Arial';
   ctx.fillStyle = 'white';
