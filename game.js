@@ -5,8 +5,9 @@ const playerSpeed = 5;
 const bulletSpeed = 10;
 const enemies = [];
 const powerUps = [];
+const explosions = [];
 const loseSound = new Audio('https://DylM0nster22.github.io/GPT-4.0-Game.github.io/rickroll.mp3');
-let isPaused = false;
+let isPaused = false; // Set this back to false
 let isInvincible = false;
 let spawnInterval = 2000;
 let lastSpawnTime = 0;
@@ -73,29 +74,49 @@ function togglePauseMenu() {
         pauseMenu.style.display = "none";
     }
 }
-
+function spawnExplosion(x, y) {
+    explosions.push({x, y, frame: 0});
+}
+function updateExplosions() {
+    for (let i = explosions.length - 1; i >= 0; i--) {
+        const explosion = explosions[i];
+        explosion.frame++;
+        if (explosion.frame >= 20) {
+            explosions.splice(i, 1);
+        }
+    }
+}
+function drawExplosions() {
+    ctx.fillStyle = "orange";
+    for (const explosion of explosions) {
+        ctx.beginPath();
+        ctx.arc(explosion.x, explosion.y, (explosion.frame / 2) * (20 / (2 * Math.PI)), 0, 2 * Math.PI);
+        ctx.fill();
+    }
+}
 
 // Call gameLoop();
 function update() {
-  handlePlayerMovement();
-  handleBullets();
-  handleEnemies();
-  handlePowerUps();
+    handlePlayerMovement();
+    handleBullets();
+    handleEnemies();
+    handlePowerUps();
+    updateExplosions(); // Add this line to update the explosions
 
-  if (!isInvincible) {
-    const pointsEarned = checkCollisions();
-    gameState.score += pointsEarned;
-  }
+    if (!isInvincible) {
+        const pointsEarned = checkCollisions();
+        gameState.score += pointsEarned;
+    }
 
-  if (gameState.defeatedEnemies === 49 && !gameState.bossComing) {
-    gameState.bossComing = true;
-    setTimeout(() => {
-      gameState.bossComing = false;
-      spawnBoss();
-      gameState.bossSpawned = true;
-      spawnPowerUp("middle"); // spawn powerup under the boss
-    }, 3000); // Show message for 3 seconds
-  }
+    if (gameState.defeatedEnemies === 49 && !gameState.bossComing) {
+        gameState.bossComing = true;
+        setTimeout(() => {
+            gameState.bossComing = false;
+            spawnBoss();
+            gameState.bossSpawned = true;
+            spawnPowerUp("middle"); // spawn powerup under the boss
+        }, 3000); // Show message for 3 seconds
+    }
 
     // Check upgrade when the player reaches 5 points
     if (gameState.score >= 10 && gameState.upgrades < 1) {
@@ -174,11 +195,11 @@ function handlePlayerMovement() {
 }
 function shootBullet(e) {
     const currentTime = Date.now();
-    if (currentTime - lastClickTime <= 1000) {
+    if (currentTime - lastClickTime <= 100) {
         clickCount++;
         
-        if (clickCount > 30) {
-            gameOver = true;
+        if (clickCount > 100) {
+            gameOver = false;
             showCheaterScreen();
             return;
         }
@@ -210,6 +231,7 @@ function shootBullet(e) {
         bullets.push(bullet);
     }
 }
+
 
 function shootBulletWithAngleOffset(directionX, directionY, angleOffset) {
     const cosTheta = Math.cos(angleOffset);
@@ -374,7 +396,6 @@ function checkCollisions() {
         }
     }
 
-
     for (let i = 0; i < bullets.length; i++) {
         for (let j = 0; j < enemies.length; j++) {
             const bullet = bullets[i];
@@ -390,6 +411,9 @@ function checkCollisions() {
                     j--;
                     gameState.defeatedEnemies++;
                     enemiesDestroyed++;
+
+                    // Spawn an explosion at the enemy's location
+                    spawnExplosion(enemy.x, enemy.y);
 
                     if (enemy.childrenType) {
                         const children = splitEnemy(enemy);
@@ -415,6 +439,9 @@ function checkCollisions() {
                     boss = null;
                     gameState.bossDefeated++;
 
+                    // Spawn an explosion at the boss's location
+                    spawnExplosion(boss.x, boss.y);
+
                     // Spawn power-up if it hasn't been spawned before
                     if (!gameState.powerUpSpawned) {
                         spawnPowerUp();
@@ -426,6 +453,12 @@ function checkCollisions() {
     }
 
     return enemiesDestroyed;
+}
+function startGame() {
+    const mainMenu = document.getElementById("mainMenu");
+    mainMenu.style.display = "none";
+    resetGame();
+}
 }
 function drawLivesCount() {
   ctx.font = '20px Arial';
@@ -600,6 +633,9 @@ function drawBoss() {
 document.addEventListener("DOMContentLoaded", () => {
   const resumeButton = document.getElementById("resumeButton");
   const restartPauseButton = document.getElementById("restartPauseButton");
+   const startGameButton = document.getElementById("startGameButton");
+    startGameButton.addEventListener("click", startGame);
+});
 
   resumeButton.addEventListener("click", togglePauseMenu);
   restartPauseButton.addEventListener("click", () => {

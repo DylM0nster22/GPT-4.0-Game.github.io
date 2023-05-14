@@ -20,7 +20,7 @@
             display: block;
         }
 
-        #gameOverScreen, #pauseMenu {
+        #gameOverScreen, #pauseMenu, #mainMenu {
             background-color: rgba(0, 0, 0, 0.8);
             color: white;
             width: 800px;
@@ -54,6 +54,10 @@
 
 <body>
     <canvas id="gameCanvas" width="800" height="600" alt="Top Down Shooter Game"></canvas>
+    <div id="mainMenu">
+        <h1>Welcome to the Game!</h1>
+        <button id="startGameButton">Start Game</button>
+    </div>
     <div id="pauseMenu" class="hidden">
         <h1>Paused</h1>
         <button id="resumeButton" aria-label="Resume Game">Resume</button>
