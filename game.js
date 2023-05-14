@@ -632,9 +632,8 @@ function drawBoss() {
 document.addEventListener("DOMContentLoaded", () => {
   const resumeButton = document.getElementById("resumeButton");
   const restartPauseButton = document.getElementById("restartPauseButton");
-   const startGameButton = document.getElementById("startGameButton");
-    startGameButton.addEventListener("click", startGame);
-});
+  const startGameButton = document.getElementById("startGameButton");
+  startGameButton.addEventListener("click", startGame);
 
   resumeButton.addEventListener("click", togglePauseMenu);
   restartPauseButton.addEventListener("click", () => {
@@ -644,8 +643,9 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 document.addEventListener("click", (e) => {
-    if (e.target.id === "restartButton") {
-        resetGame();
-    }
+  if (e.target.id === "restartButton") {
+    resetGame();
+  }
 });
+
 resetGame();
