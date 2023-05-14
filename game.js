@@ -6,7 +6,6 @@ const bulletSpeed = 10;
 const enemies = [];
 const powerUps = [];
 const explosions = [];
-const loseSound = new Audio('https://DylM0nster22.github.io/GPT-4.0-Game.github.io/rickroll.mp3');
 let isPaused = false; // Set this back to false
 let isInvincible = false;
 let spawnInterval = 2000;
