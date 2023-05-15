@@ -4,8 +4,8 @@ const ctx = canvas.getContext("2d");
 const playerSpeed = 5;
 const bulletSpeed = 10;
 const enemies = [];
-const powerUps = [];
 const explosions = [];
+const powerUps = [];
 let isPaused = false; // Set this back to false
 let isInvincible = false;
 let spawnInterval = 2000;
@@ -647,4 +647,6 @@ document.addEventListener("click", (e) => {
   }
 });
 
-resetGame();
+document.addEventListener("DOMContentLoaded", () => {
+    resetGame();
+});
