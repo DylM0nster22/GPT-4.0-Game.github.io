@@ -26,8 +26,8 @@ const gameState = {
     bossComing: false,
     bossProjectiles: [],
     lives: 3, // Add the lives property
+	isGameStarted: false, // Add this line
 };
-
 const player = { x: canvas.width / 2, y: canvas.height / 2, size: 20 };
 const bullets = [];
 
@@ -260,11 +260,11 @@ function handleBullets() {
 }
 
 function handleEnemies() {
-  if (!boss && Date.now() - lastSpawnTime > spawnInterval) {
-    spawnEnemy();
-    lastSpawnTime = Date.now();
-    spawnInterval *= 0.99;
-  }
+    if (!boss && Date.now() - lastSpawnTime > spawnInterval && gameState.isGameStarted) { // Add gameState.isGameStarted condition
+        spawnEnemy();
+        lastSpawnTime = Date.now();
+        spawnInterval *= 0.99;
+    }
 
   for (const enemy of enemies) {
         const directionX = player.x - enemy.x;
@@ -456,6 +456,7 @@ function checkCollisions() {
 function startGame() {
     const mainMenu = document.getElementById("mainMenu");
     mainMenu.style.display = "none";
+    gameState.isGameStarted = true; // Add this line
     resetGame();
 }
 function drawLivesCount() {
