@@ -150,6 +150,8 @@ function render() {
     drawPowerUps();
     drawKillCount();
     drawLivesCount(); // Add this line
+	drawHighScore(); // Add this line
+
 
     if (gameState.bossComing) {
         drawBossComingText();
@@ -388,9 +390,12 @@ function checkCollisions() {
             gameState.defeatedEnemies++;
             enemiesDestroyed++;
 
-            if (gameState.lives <= 0) {
-                gameOver = true;
-                break;
+          
+    if (gameState.lives <= 0) {
+        gameOver = true;
+        updateHighScore(); // Add this line
+        gameState.deaths++; 			
+	}  
             }
         }
     }
@@ -453,11 +458,18 @@ function checkCollisions() {
 
     return enemiesDestroyed;
 }
-function startGame() {
+           
     const mainMenu = document.getElementById("mainMenu");
     mainMenu.style.display = "none";
     gameState.isGameStarted = true; // Add this line
     resetGame();
+}
+function drawHighScore() {
+    const highScore = localStorage.getItem('highScore') ? parseInt(localStorage.getItem('highScore')) : 0;
+    ctx.font = '20px Arial';
+    ctx.fillStyle = 'white';
+    ctx.textAlign = 'left';
+    ctx.fillText(`High Score: ${highScore}`, 10, 90); // Change y-coordinate to avoid overlapping
 }
 function drawLivesCount() {
   ctx.font = '20px Arial';
@@ -471,6 +483,13 @@ function showGameOverScreen() {
     const gameOverScreen = document.getElementById("gameOverScreen");
     gameOverScreen.innerHTML = `<h1>Game Over</h1><p>Score: ${gameState.score}</p><button id="restartButton">Restart</button>`;
     gameOverScreen.style.display = "block";
+}
+function updateHighScore() {
+    const currentHighScore = localStorage.getItem('highScore') ? parseInt(localStorage.getItem('highScore')) : 0;
+
+    if (gameState.score > currentHighScore) {
+        localStorage.setItem('highScore', gameState.score);
+    }
 }
 
 function resetGame() {
