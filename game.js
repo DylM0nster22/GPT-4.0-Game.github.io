@@ -388,14 +388,7 @@ function checkCollisions() {
             enemies.splice(i, 1);
             i--;
             gameState.defeatedEnemies++;
-            enemiesDestroyed++;
-
-          
-    if (gameState.lives <= 0) {
-        gameOver = true;
-        updateHighScore(); // Add this line
-        gameState.deaths++; 			
-	}  
+            enemiesDestroyed++;     
             }
         }
     }
@@ -408,6 +401,18 @@ function checkCollisions() {
             if (Math.hypot(bullet.x - enemy.x, bullet.y - enemy.y) < (bullet.size + enemy.size) / 2) {
                 bullets.splice(i, 1);
                 i--;
+				    if (gameState.lives <= 0) {
+        gameOver = true;
+        
+        // Update high score if the current score is higher
+        const currentHighScore = localStorage.getItem('highScore') ? parseInt(localStorage.getItem('highScore')) : 0;
+      
+        if (gameState.score > currentHighScore) {
+            localStorage.setItem('highScore', gameState.score);
+        }            
+      
+        gameState.deaths++; 
+    }
 
                 enemy.hits++;
                 if (enemy.hits === enemy.health) {
@@ -484,14 +489,6 @@ function showGameOverScreen() {
     gameOverScreen.innerHTML = `<h1>Game Over</h1><p>Score: ${gameState.score}</p><button id="restartButton">Restart</button>`;
     gameOverScreen.style.display = "block";
 }
-function updateHighScore() {
-    const currentHighScore = localStorage.getItem('highScore') ? parseInt(localStorage.getItem('highScore')) : 0;
-
-    if (gameState.score > currentHighScore) {
-        localStorage.setItem('highScore', gameState.score);
-    }
-}
-
 function resetGame() {
     player.x = canvas.width / 2;
     player.y = canvas.height / 2;
